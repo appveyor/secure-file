@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AppVeyor.Tools.SecureFile")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("File encryption utility")]
+[assembly: AssemblyDescription("Command-line utility for encrypting/decrypting files with Rijndael algorithm.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Appveyor Systems Inc.")]
-[assembly: AssemblyProduct("AppVeyor.Tools.SecureFile")]
+[assembly: AssemblyCompany("AppVeyor")]
+[assembly: AssemblyProduct("AppVeyor CI")]
 [assembly: AssemblyCopyright("Copyright © 2015 by Appveyor Systems Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
