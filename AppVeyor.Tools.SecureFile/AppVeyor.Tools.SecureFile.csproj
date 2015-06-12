@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AppVeyor.Tools.SecureFile</RootNamespace>
-    <AssemblyName>AppVeyor.Tools.SecureFile</AssemblyName>
+    <AssemblyName>secure-file</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
