@@ -109,7 +109,7 @@ namespace AppVeyor.Tools.SecureFile
                     }
                 }
 
-                var basePath = AppDomain.CurrentDomain.BaseDirectory;
+                var basePath = Environment.CurrentDirectory;
 
                 // convert relative paths to absolute
                 if (!Path.IsPathRooted(fileName))

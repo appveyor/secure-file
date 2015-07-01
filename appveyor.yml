@@ -5,12 +5,4 @@ after_build:
 - nuget pack AppVeyor.Tools.SecureFile\secure-file.nuspec -Version %appveyor_build_version%
 - appveyor PushArtifact secure-file.%appveyor_build_version%.nupkg
 
-# publish NuGet package on tag build
-deploy:
-- provider: NuGet
-  api_key:
-    secure: 5MUShxp5+kPsKeKnl2gHSniQOJQ5/B8REh4nH2LfTi7AwA1oUHulT1Apl9eR+hQs
-  on:
-    appveor_repo_tag: true
-
 test: off
