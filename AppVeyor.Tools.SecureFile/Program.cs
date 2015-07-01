@@ -19,108 +19,138 @@ namespace AppVeyor.Tools.SecureFile
             string secret = null;
             string outFileName = null;
 
-            #region parse parameters
-            int pos = 0;
-            while(pos < args.Length)
+            try
             {
-                var p = args[pos];
-                if(p.Equals("-decrypt", StringComparison.OrdinalIgnoreCase))
+                #region parse parameters
+                if (args.Length == 0)
                 {
-                    // is it last parameter?
-                    if(pos == args.Length - 1)
+                    throw new Exception("No arguments specified.");
+                }
+
+                int pos = 0;
+                while (pos < args.Length)
+                {
+                    var p = args[pos];
+                    if (p.Equals("-decrypt", StringComparison.OrdinalIgnoreCase))
                     {
-                        throw new Exception("Input file name is missing.");
+                        // is it last parameter?
+                        if (pos == args.Length - 1)
+                        {
+                            throw new Exception("Input file name is missing.");
+                        }
+                        else
+                        {
+                            operation = "decrypt";
+                            fileName = args[++pos];
+                        }
+                    }
+                    else if (p.Equals("-encrypt", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // is it last parameter?
+                        if (pos == args.Length - 1)
+                        {
+                            throw new Exception("Input file name is missing.");
+                        }
+                        else
+                        {
+                            operation = "encrypt";
+                            fileName = args[++pos];
+                        }
+                    }
+                    else if (p.Equals("-secret", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // is it last parameter?
+                        if (pos == args.Length - 1)
+                        {
+                            throw new Exception("Secret passphrase is missing.");
+                        }
+                        else
+                        {
+                            secret = args[++pos];
+                        }
+                    }
+                    else if (p.Equals("-out", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // is it last parameter?
+                        if (pos == args.Length - 1)
+                        {
+                            throw new Exception("Out file name is missing.");
+                        }
+                        else
+                        {
+                            outFileName = args[++pos];
+                        }
+                    }
+
+                    Console.WriteLine(args[pos]);
+                    pos++;
+                }
+
+                if(operation == null)
+                {
+                    throw new Exception("No operation specified. It should be either -encrypt or -decrypt.");
+                }
+                #endregion
+
+                #region validate file names
+                if (outFileName == null && operation == "encrypt")
+                {
+                    outFileName = fileName + ".enc";
+                }
+                else if (outFileName == null && operation == "decrypt")
+                {
+                    if (Path.GetExtension(fileName).Equals(".enc", StringComparison.OrdinalIgnoreCase))
+                    {
+                        outFileName = fileName.Substring(fileName.Length - 4); // trim .enc
                     }
                     else
                     {
-                        operation = "decrypt";
-                        fileName = args[++pos];
+                        outFileName = fileName + ".dec";
                     }
                 }
-                else if (p.Equals("-encrypt", StringComparison.OrdinalIgnoreCase))
+
+                var basePath = AppDomain.CurrentDomain.BaseDirectory;
+
+                // convert relative paths to absolute
+                if (!Path.IsPathRooted(fileName))
                 {
-                    // is it last parameter?
-                    if (pos == args.Length - 1)
-                    {
-                        throw new Exception("Input file name is missing.");
-                    }
-                    else
-                    {
-                        operation = "encrypt";
-                        fileName = args[++pos];
-                    }
+                    fileName = Path.GetFullPath(Path.Combine(basePath, fileName));
                 }
-                else if (p.Equals("-secret", StringComparison.OrdinalIgnoreCase))
+
+                if (!Path.IsPathRooted(outFileName))
                 {
-                    // is it last parameter?
-                    if (pos == args.Length - 1)
-                    {
-                        throw new Exception("Secret passphrase is missing.");
-                    }
-                    else
-                    {
-                        secret = args[++pos];
-                    }
+                    outFileName = Path.GetFullPath(Path.Combine(basePath, outFileName));
                 }
-                else if (p.Equals("-out", StringComparison.OrdinalIgnoreCase))
+
+                // in and out file names should not be the same
+                if (fileName.Equals(outFileName, StringComparison.OrdinalIgnoreCase))
                 {
-                    // is it last parameter?
-                    if (pos == args.Length - 1)
-                    {
-                        throw new Exception("Out file name is missing.");
-                    }
-                    else
-                    {
-                        outFileName = args[++pos];
-                    }
+                    throw new Exception("Input and output files cannot be the same.");
                 }
 
-                Console.WriteLine(args[pos]);
-                pos++;
-            }
-            #endregion
-
-            #region validate file names
-            if (outFileName == null && operation == "encrypt")
-            {
-                outFileName = fileName + ".enc";
-            }
-            else if (outFileName == null && operation == "decrypt")
-            {
-                if(Path.GetExtension(fileName).Equals(".enc", StringComparison.OrdinalIgnoreCase))
+                if (!File.Exists(fileName))
                 {
-                    outFileName = fileName.Substring(fileName.Length - 4); // trim .enc
+                    throw new Exception("File not found: " + fileName);
                 }
-                else
-                {
-                    outFileName = fileName + ".dec";
-                }
+                #endregion
             }
-
-            var basePath = AppDomain.CurrentDomain.BaseDirectory;
-
-            // convert relative paths to absolute
-            if(!Path.IsPathRooted(fileName))
+            catch(Exception ex)
             {
-                fileName = Path.GetFullPath(Path.Combine(basePath, fileName));
-            }
+                Console.WriteLine("Error: " + ex.Message);
+                
+                Console.WriteLine(@"
+USAGE:
 
-            if (!Path.IsPathRooted(outFileName))
-            {
-                outFileName = Path.GetFullPath(Path.Combine(basePath, outFileName));
-            }
+Encrypting file:
 
-            // in and out file names should not be the same
-            if(fileName.Equals(outFileName, StringComparison.OrdinalIgnoreCase))
-            {
-                throw new Exception("Input and output files cannot be the same.");
-            }
+    secure-file -encrypt <filename.ext> -secret <keyphrase> -out [filename.ext.enc]
 
-            if(!File.Exists(fileName))
-            {
-                throw new Exception("File not found: " + fileName);
+Decrypting file:
+
+    secure-file -decrypt <filename.ext.enc> -secret <keyphrase> -out [filename.ext]
+");
+                Environment.Exit(1);
             }
-            #endregion
 
             if(operation == "encrypt")
             {

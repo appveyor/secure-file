@@ -1,0 +1,8 @@
+configuration: Release
+
+# build NuGet package and upload it to artifacts
+after_build:
+- nuget pack AppVeyor.Tools.SecureFile\secure-file.nuspec -Version %appveyor_build_version%
+- appveyor PushArtifact secure-file.%appveyor_build_version%.nupkg
+
+test: off
