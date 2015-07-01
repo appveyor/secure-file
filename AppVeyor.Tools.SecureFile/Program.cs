@@ -153,11 +153,29 @@ Decrypting file:
 
             if(operation == "encrypt")
             {
-                Encrypt(fileName, outFileName, secret);
+                try
+                {
+                    Encrypt(fileName, outFileName, secret);
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine("Error encrypting file: " + ex.Message);
+                }
             }
             else if (operation == "decrypt")
             {
-                Decrypt(fileName, outFileName, secret);
+                try
+                {
+                    Decrypt(fileName, outFileName, secret);
+                }
+                catch (CryptographicException)
+                {
+                    Console.WriteLine("Error decrypting file.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error decrypting file: " + ex.Message);
+                }
             }
         }
 
