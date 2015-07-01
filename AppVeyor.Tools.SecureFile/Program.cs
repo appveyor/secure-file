@@ -82,7 +82,6 @@ namespace AppVeyor.Tools.SecureFile
                         }
                     }
 
-                    Console.WriteLine(args[pos]);
                     pos++;
                 }
 
@@ -101,7 +100,7 @@ namespace AppVeyor.Tools.SecureFile
                 {
                     if (Path.GetExtension(fileName).Equals(".enc", StringComparison.OrdinalIgnoreCase))
                     {
-                        outFileName = fileName.Substring(fileName.Length - 4); // trim .enc
+                        outFileName = fileName.Substring(0, fileName.Length - 4); // trim .enc
                     }
                     else
                     {
