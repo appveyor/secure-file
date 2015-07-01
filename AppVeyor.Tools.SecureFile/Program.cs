@@ -160,6 +160,7 @@ Decrypting file:
                 catch(Exception ex)
                 {
                     Console.WriteLine("Error encrypting file: " + ex.Message);
+                    Environment.Exit(2);
                 }
             }
             else if (operation == "decrypt")
@@ -171,10 +172,12 @@ Decrypting file:
                 catch (CryptographicException)
                 {
                     Console.WriteLine("Error decrypting file.");
+                    Environment.Exit(3);
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine("Error decrypting file: " + ex.Message);
+                    Environment.Exit(3);
                 }
             }
         }
