@@ -3,6 +3,17 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp2.0;net462</TargetFrameworks>
+    <FileVersion>1.0.0.1</FileVersion>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <Authors>Appveyor Systems Inc.</Authors>
+    <Company>Appveyor Systems Inc.</Company>
+    <Product>AppVeyor</Product>
+    <Description>Command-line utility for encrypting/decrypting files with Rijndael algorithm.</Description>
+    <Copyright>Copyright © 2018 by Appveyor Systems Inc.</Copyright>
+    <PackageProjectUrl>https://github.com/appveyor/secure-file</PackageProjectUrl>
+    <Version>1.0.0.1</Version>
+    <RepositoryUrl>https://github.com/appveyor/secure-file</RepositoryUrl>
+    <PackageTags>appveyor encryption tools</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp2.0|AnyCPU'">

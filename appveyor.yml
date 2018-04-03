@@ -1,8 +1,36 @@
-configuration: Release
+environment:
+  secure_file_version: 1.0.0
 
-# build NuGet package and upload it to artifacts
-after_build:
-- nuget pack AppVeyor.Tools.SecureFile\secure-file.nuspec -Version %appveyor_build_version%
-- appveyor PushArtifact secure-file.%appveyor_build_version%.nupkg
+# Do not build feature branch with open Pull Requests
+skip_branch_with_pr: true
+
+skip_tags: true
+
+init:
+- set OUT_DIR=_dist
+- set BUILD_DIR=_build
+- set appveyor_full_version=%secure_file_version%.%appveyor_build_number%
+- appveyor UpdateBuild -Version %appveyor_full_version%
+
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  version: '{version}'
+  package_version: '{version}'
+  assembly_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+
+build_script:
+- build.cmd
+- appveyor PushArtifact secure-file.zip
 
 test: off
+
+deploy:
+- provider: GitHub
+  tag: $(secure_file_version)
+  release: Secure File $(secure_file_version)
+  auth_token:
+    secure: avf7rJ4eX9x4b5bE/CX/nL6rQgUnNhSGTxxqMt+KyPU3yeOhHIE8q8NtmO10YOae
+  force_update: true
