@@ -21,7 +21,7 @@ dotnet_csproj:
 
 build_script:
 - build.cmd
-- 7z a secure-file.zip build\*
+- 7z a secure-file.zip %APPVEYOR_BUILD_FOLDER%\build\*
 - appveyor PushArtifact secure-file.zip
 
 test: off
