@@ -7,8 +7,6 @@ skip_branch_with_pr: true
 skip_tags: true
 
 init:
-- set OUT_DIR=_dist
-- set BUILD_DIR=_build
 - set appveyor_full_version=%secure_file_version%.%appveyor_build_number%
 - appveyor UpdateBuild -Version %appveyor_full_version%
 
@@ -23,6 +21,7 @@ dotnet_csproj:
 
 build_script:
 - build.cmd
+- 7z a secure-file.zip build\*
 - appveyor PushArtifact secure-file.zip
 
 test: off
