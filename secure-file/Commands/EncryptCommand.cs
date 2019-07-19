@@ -13,6 +13,13 @@ namespace AppVeyor.Tools.SecureFile.Commands
         /// </summary>
         public const int DefaultSaltLength = 38;
 
+        protected override void OnAfterExecute(ApplicationContext context)
+        {
+            Console.WriteLine($"Salt: {context.Salt}");
+
+            base.OnAfterExecute(context);
+        }
+
         protected override ICryptoTransform CreateTransform(SymmetricAlgorithm algorithm)
         {
             if (algorithm == null)

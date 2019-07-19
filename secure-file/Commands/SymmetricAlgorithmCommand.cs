@@ -21,6 +21,17 @@ namespace AppVeyor.Tools.SecureFile.Commands
                 throw new ArgumentNullException(nameof(context));
             }
 
+            OnExecute(context);
+            OnAfterExecute(context);
+        }
+
+        protected virtual void OnExecute(ApplicationContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             using (var algorithm = CreateAlgorithm(context))
             using (Stream inStream = File.OpenRead(context.FileName), outStream = File.Create(context.OutputFileName))
             {
@@ -30,6 +41,10 @@ namespace AppVeyor.Tools.SecureFile.Commands
                     inStream.CopyTo(cryptoStream);
                 }
             }
+        }
+
+        protected virtual void OnAfterExecute(ApplicationContext context)
+        {
         }
 
         protected abstract ICryptoTransform CreateTransform(SymmetricAlgorithm algorithm);
