@@ -6,7 +6,7 @@ High-level scenario of using this utility in [AppVeyor CI](http://www.appveyor.c
 
 - Encrypt file on development machine.
 - Commit encrypted file to source control.
-- Place "secret" to project environment variable.
+- Place "secret" and "salt" within a project environment variable.
 - Decrypt file during the build.
 
 System requirements:
