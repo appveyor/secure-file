@@ -1,5 +1,5 @@
 environment:
-  secure_file_version: 1.0.0
+  secure_file_version: 1.0.1
 
 # Do not build feature branch with open Pull Requests
 skip_branch_with_pr: true
